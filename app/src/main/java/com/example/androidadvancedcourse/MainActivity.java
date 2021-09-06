@@ -15,8 +15,10 @@ import android.widget.PopupMenu;
 import com.example.androidadvancedcourse.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationBarView;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import me.ibrahimsn.lib.OnItemReselectedListener;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding activityMainBinding;
 

@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
+apply plugin: 'dagger.hilt.android.plugin'
+
 android {
     compileSdk 31
 
@@ -50,6 +52,18 @@ dependencies {
 
     //bottom nav
     implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.8'
+
+    //--------------------------------------------------------------
+    //Dagger Hilt
+    implementation 'com.google.dagger:hilt-android:2.38.1'
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.38.1'
+
+    //rounded imageView
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
 
 }

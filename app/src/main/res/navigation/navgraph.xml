@@ -8,16 +8,13 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.androidadvancedcourse.HomeFragment.HomeFragment"
-        android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/marketFragment"
         android:name="com.example.androidadvancedcourse.MarketFragment.MarketFragment"
-        android:label="fragment_market"
         tools:layout="@layout/fragment_market" />
     <fragment
         android:id="@+id/watchlistfragment"
         android:name="com.example.androidadvancedcourse.watchlistfragment.watchlistfragment"
-        android:label="fragment_watchlistfragment"
         tools:layout="@layout/fragment_watchlistfragment" />
 </navigation>
