@@ -6,19 +6,35 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.androidadvancedcourse.AppRepository;
+import com.example.androidadvancedcourse.Models.cryptolistmodel.AllMarketModel;
 import com.example.androidadvancedcourse.R;
 
 import java.util.ArrayList;
+import java.util.concurrent.Future;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+import io.reactivex.rxjava3.core.Observable;
+
+@HiltViewModel
 public class AppViewmodel extends AndroidViewModel {
 
     MutableLiveData<ArrayList<Integer>> mutableLiveData = new MutableLiveData<>();
 
+    @Inject
+    AppRepository appRepository;
 
+    @Inject
     public AppViewmodel(@NonNull Application application) {
         super(application);
         getViewPagerData();
 
+    }
+
+    public Future<Observable<AllMarketModel>> MarketFutureCall(){
+        return appRepository.marketListFutureCall();
     }
 
     MutableLiveData<ArrayList<Integer>> getViewPagerData(){
