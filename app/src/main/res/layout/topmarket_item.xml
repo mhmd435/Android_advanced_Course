@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="145dp"
+        android:layout_height="95dp">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/TopCoinCard"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/topmarket_bg">
+
+                <ImageView
+                    android:id="@+id/coinlogo"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@drawable/bnb"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/TopCoinName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@+id/coinlogo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="BTC/USDT" />
+
+                <TextView
+                    android:id="@+id/TopCoinChange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintStart_toEndOf="@+id/coinlogo"
+                    app:layout_constraintTop_toBottomOf="@+id/TopCoinName"
+                    tools:text="15%" />
+
+                <TextView
+                    android:id="@+id/TopCoinPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintStart_toEndOf="@+id/coinlogo"
+                    app:layout_constraintTop_toBottomOf="@+id/TopCoinChange"
+                    tools:text="39068" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

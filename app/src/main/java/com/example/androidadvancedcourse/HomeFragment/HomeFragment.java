@@ -17,10 +17,15 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.androidadvancedcourse.HomeFragment.adapters.TopCoinRvAdapter;
+import com.example.androidadvancedcourse.Models.cryptolistmodel.AllMarketModel;
+import com.example.androidadvancedcourse.Models.cryptolistmodel.DataItem;
+import com.example.androidadvancedcourse.RoomDb.Entites.MarketListEntity;
 import com.example.androidadvancedcourse.viewmodels.AppViewmodel;
 import com.example.androidadvancedcourse.HomeFragment.adapters.sliderImageAdapter;
 import com.example.androidadvancedcourse.MainActivity;
@@ -28,11 +33,18 @@ import com.example.androidadvancedcourse.R;
 import com.example.androidadvancedcourse.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import dagger.hilt.android.AndroidEntryPoint;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
@@ -43,6 +55,12 @@ public class HomeFragment extends Fragment {
     @Inject
     @Named("myname")
     String name;
+
+    public List<String> top_wants = Arrays.asList("BTC","ETH","BNB","ADA","XRP","DOGE","DOT","UNI","LTC","LINK");
+    TopCoinRvAdapter topCoinRvAdapter;
+    CompositeDisposable compositeDisposable;
+
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -63,8 +81,10 @@ public class HomeFragment extends Fragment {
 
         fragmentHomeBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false);
         appViewModel = new ViewModelProvider(requireActivity()).get(AppViewmodel.class);
+        compositeDisposable = new CompositeDisposable();
 
         setupViewPager2();
+        getAllMarketDataFromDb();
 
 
         // Inflate the layout for this fragment
@@ -104,6 +124,40 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+    }
+
+    private void getAllMarketDataFromDb(){
+        Disposable disposable = appViewModel.getAllMarketData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MarketListEntity>() {
+                    @Override
+                    public void accept(MarketListEntity marketListEntity) throws Throwable {
+                        AllMarketModel allMarketModel = marketListEntity.getAllMarketModel();
+
+                        ArrayList<DataItem> top10 = new ArrayList<>();
+                        for (int i = 0; i < allMarketModel.getRootData().getCryptoCurrencyList().size(); i++) {
+                            for (int j = 0; j < top_wants.size(); j++) {
+                                String coin_name = top_wants.get(j);
+                                if (allMarketModel.getRootData().getCryptoCurrencyList().get(i).getSymbol().equals(coin_name)) {
+                                    DataItem dataItem = allMarketModel.getRootData().getCryptoCurrencyList().get(i);
+                                    top10.add(dataItem);
+                                }
+                            }
+                        }
+
+
+                        if (fragmentHomeBinding.TopCoinRv.getAdapter() != null) {
+                            topCoinRvAdapter = (TopCoinRvAdapter) fragmentHomeBinding.TopCoinRv.getAdapter();
+                            topCoinRvAdapter.updateData(top10);
+                        } else {
+                            topCoinRvAdapter = new TopCoinRvAdapter(top10);
+                            fragmentHomeBinding.TopCoinRv.setAdapter(topCoinRvAdapter);
+                        }
+                    }
+                });
+        compositeDisposable.add(disposable);
 
     }
 }

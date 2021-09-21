@@ -115,8 +115,10 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(@NonNull AllMarketModel allMarketModel) {
-                        Log.e("TAG", "onNext: " + allMarketModel.getRootData().getCryptoCurrencyList().get(0).getName());
-                        Log.e("TAG", "onNext: " + allMarketModel.getRootData().getCryptoCurrencyList().get(1).getName());
+//                        Log.e("TAG", "onNext: " + allMarketModel.getRootData().getCryptoCurrencyList().get(0).getName());
+//                        Log.e("TAG", "onNext: " + allMarketModel.getRootData().getCryptoCurrencyList().get(1).getName());
+
+                        appViewModel.insertAllMarket(allMarketModel);
                     }
 
                     @Override
