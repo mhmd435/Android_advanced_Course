@@ -16,13 +16,17 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.example.androidadvancedcourse.HomeFragment.adapters.TopCoinRvAdapter;
+import com.example.androidadvancedcourse.HomeFragment.adapters.TopGainLosersAdapter;
 import com.example.androidadvancedcourse.Models.cryptolistmodel.AllMarketModel;
 import com.example.androidadvancedcourse.Models.cryptolistmodel.DataItem;
 import com.example.androidadvancedcourse.RoomDb.Entites.MarketListEntity;
@@ -31,6 +35,8 @@ import com.example.androidadvancedcourse.HomeFragment.adapters.sliderImageAdapte
 import com.example.androidadvancedcourse.MainActivity;
 import com.example.androidadvancedcourse.R;
 import com.example.androidadvancedcourse.databinding.FragmentHomeBinding;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,6 +66,8 @@ public class HomeFragment extends Fragment {
     TopCoinRvAdapter topCoinRvAdapter;
     CompositeDisposable compositeDisposable;
 
+    TopGainLosersAdapter topGainLosersAdapter;
+
 
 
     @Override
@@ -76,8 +84,7 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         fragmentHomeBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false);
         appViewModel = new ViewModelProvider(requireActivity()).get(AppViewmodel.class);
@@ -85,10 +92,59 @@ public class HomeFragment extends Fragment {
 
         setupViewPager2();
         getAllMarketDataFromDb();
+        setupTablayoutTopGainLose(fragmentHomeBinding.topGainIndicator,fragmentHomeBinding.topLoseIndicator);
+
 
 
         // Inflate the layout for this fragment
         return fragmentHomeBinding.getRoot();
+    }
+
+    private void setupTablayoutTopGainLose(View topGainIndicator, View topLoseIndicator){
+        topGainLosersAdapter = new TopGainLosersAdapter(this);
+        fragmentHomeBinding.viewPager2.setAdapter(topGainLosersAdapter);
+
+        Animation gainAnimIn = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.slide_from_left);
+        Animation gainAnimOut = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.slide_out_left);
+        Animation loseAnimIn = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.slide_from_right);
+        Animation loseAnimOut = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),R.anim.slide_out_right);
+
+        fragmentHomeBinding.viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                if (position == 0){
+                    topLoseIndicator.startAnimation(loseAnimOut);
+                    topLoseIndicator.setVisibility(View.GONE);
+                    topGainIndicator.setVisibility(View.VISIBLE);
+                    topGainIndicator.startAnimation(gainAnimIn);
+
+                }else {
+                    topGainIndicator.startAnimation(gainAnimOut);
+                    topGainIndicator.setVisibility(View.GONE);
+                    topLoseIndicator.setVisibility(View.VISIBLE);
+                    topLoseIndicator.startAnimation(loseAnimIn);
+                }
+            }
+        });
+
+        new TabLayoutMediator(fragmentHomeBinding.tablayout, fragmentHomeBinding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                if (position == 0){
+                    tab.setText("TopGainers");
+                }else {
+                    tab.setText("TopLosers");
+                }
+            }
+        }).attach();
+
     }
 
     private void setupViewPager2() {

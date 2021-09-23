@@ -3,15 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable-v24/topgainview_bg.xml" value="0.35052083333333334" />
+        <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable-v24/toplosersview_bg.xml" value="0.35052083333333334" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/gradiant_slider.xml" value="0.35052083333333334" />
+        <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/ic_baseline_arrow_drop_up_24.xml" value="0.3314814814814815" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/ic_baseline_sort_24.xml" value="0.23333333333333334" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/rv_item_bg.xml" value="0.30648148148148147" />
+        <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/topgainview_bg.xml" value="0.3314814814814815" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/topmarket_bg.xml" value="0.35052083333333334" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/activity_main.xml" value="0.2988679352838745" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/appbarlayout.xml" value="0.3307291666666667" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/fragment_home.xml" value="0.3307291666666667" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/fragment_market.xml" value="0.3307291666666667" />
+        <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/fragment_top_gain_lose.xml" value="0.2264151024877837" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/fragment_watchlistfragment.xml" value="0.3338541666666667" />
+        <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/gainlose_rv_item.xml" value="0.32871794871794874" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/slider_image_item.xml" value="0.33645833333333336" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/topmarket_item.xml" value="0.334375" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.3338541666666667" />
