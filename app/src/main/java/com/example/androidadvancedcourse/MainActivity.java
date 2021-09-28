@@ -24,6 +24,8 @@ import com.example.androidadvancedcourse.viewmodels.AppViewmodel;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -40,6 +42,8 @@ import me.ibrahimsn.lib.OnItemReselectedListener;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
+    DateTimeFormatter dtf;
+    LocalDateTime now;
 
     @Inject
     ConnectivityManager connectivityManager;
@@ -65,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
         activityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
+        setuptime();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.e("time", "oncreate time: " + dtf.format(LocalDateTime.now()) );
+        }
         drawerLayout = activityMainBinding.drawerlayout;
 
         compositeDisposable = new CompositeDisposable();
@@ -74,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
         CheckConnection();
 
 
+    }
+
+    private void setuptime() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+        }
     }
 
     private void CheckConnection() {
@@ -103,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void CallListApiRequest() {
-        Observable.interval(20, TimeUnit.SECONDS)
+        Observable.interval(5, TimeUnit.SECONDS)
                 .flatMap(n -> appViewModel.MarketFutureCall().get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -111,14 +125,20 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         compositeDisposable.add(d);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            Log.e("time", "onSubscribe time: " + dtf.format(LocalDateTime.now()) );
+                        }
                     }
 
                     @Override
                     public void onNext(@NonNull AllMarketModel allMarketModel) {
 //                        Log.e("TAG", "onNext: " + allMarketModel.getRootData().getCryptoCurrencyList().get(0).getName());
 //                        Log.e("TAG", "onNext: " + allMarketModel.getRootData().getCryptoCurrencyList().get(1).getName());
-
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            Log.e("time", "onNext time: " + dtf.format(LocalDateTime.now()) );
+                        }
                         appViewModel.insertAllMarket(allMarketModel);
+
                     }
 
                     @Override
@@ -128,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            Log.e("time", "onComplete time: " + dtf.format(LocalDateTime.now()) );
+                        }
                         Log.e("TAG", "onComplete: ");
                     }
                 });

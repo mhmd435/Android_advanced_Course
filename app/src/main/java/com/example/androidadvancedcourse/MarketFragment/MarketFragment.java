@@ -1,6 +1,7 @@
 package com.example.androidadvancedcourse.MarketFragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,11 +22,13 @@ import android.view.ViewGroup;
 import com.example.androidadvancedcourse.MainActivity;
 import com.example.androidadvancedcourse.R;
 import com.example.androidadvancedcourse.databinding.FragmentMarketBinding;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 public class MarketFragment extends Fragment {
 
     FragmentMarketBinding fragmentMarketBinding;
     MainActivity mainActivity;
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,16 +61,21 @@ public class MarketFragment extends Fragment {
                 .build();
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collapsing_market_tb);
 
-        NavigationUI.setupWithNavController(toolbar,navController,appBarConfiguration);
+
+
+        NavigationUI.setupWithNavController(collapsingToolbarLayout,toolbar,navController,appBarConfiguration);
 
 
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 if (destination.getId() == R.id.marketFragment){
+                    collapsingToolbarLayout.setTitleEnabled(false);
                     toolbar.setNavigationIcon(R.drawable.ic_baseline_sort_24);
                     toolbar.setTitle("Market");
+                    toolbar.setTitleTextColor(Color.WHITE);
                 }
             }
         });
