@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -43,7 +44,14 @@ public class MarketFragment extends Fragment {
     FragmentMarketBinding fragmentMarketBinding;
     MainActivity mainActivity;
     CollapsingToolbarLayout collapsingToolbarLayout;
-    
+
+    AppViewmodel appViewmodel;
+
+    List<DataItem> dataItemList;
+    marketRV_Adapter marketRvAdapter;
+    CompositeDisposable compositeDisposable;
+
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -63,8 +71,41 @@ public class MarketFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         fragmentMarketBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_market,container,false);
+        compositeDisposable = new CompositeDisposable();
+
+        setupViewModel();
+        getMarketListDataFromDb();
+
 
         return fragmentMarketBinding.getRoot();
+    }
+
+    private void getMarketListDataFromDb() {
+        Disposable disposable = appViewmodel.getAllMarketData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MarketListEntity>() {
+                    @Override
+                    public void accept(MarketListEntity marketListEntity) throws Throwable {
+                        AllMarketModel allMarketModel = marketListEntity.getAllMarketModel();
+                        dataItemList = allMarketModel.getRootData().getCryptoCurrencyList();
+
+                        if (fragmentMarketBinding.marketRv.getAdapter() == null){
+                            marketRvAdapter = new marketRV_Adapter((ArrayList<DataItem>) dataItemList);
+                            fragmentMarketBinding.marketRv.setAdapter(marketRvAdapter);
+                        }else {
+                            marketRvAdapter = (marketRV_Adapter) fragmentMarketBinding.marketRv.getAdapter();
+                            marketRvAdapter.updateData((ArrayList<DataItem>) dataItemList);
+                        }
+
+
+                    }
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    private void setupViewModel() {
+        appViewmodel = new ViewModelProvider(requireActivity()).get(AppViewmodel.class);
     }
 
     private void setupToolbar(View view){
@@ -93,5 +134,12 @@ public class MarketFragment extends Fragment {
                 }
             }
         });
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }

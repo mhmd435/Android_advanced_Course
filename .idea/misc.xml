@@ -12,12 +12,13 @@
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/ic_baseline_sort_24.xml" value="0.23333333333333334" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/nestedscroll_bg.xml" value="0.35" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/rv_item_bg.xml" value="0.30648148148148147" />
+        <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/searchbox_bg.xml" value="0.35" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/topgainview_bg.xml" value="0.3314814814814815" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/drawable/topmarket_bg.xml" value="0.35052083333333334" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/activity_main.xml" value="0.2988679352838745" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/appbarlayout.xml" value="0.3307291666666667" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/fragment_home.xml" value="0.3307291666666667" />
-        <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/fragment_market.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/fragment_market.xml" value="0.2988679352838745" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/fragment_top_gain_lose.xml" value="0.2264151024877837" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/fragment_watchlistfragment.xml" value="0.3338541666666667" />
         <entry key="..\:/AndroidStudioProject/AndroidAdvancedCourse/app/src/main/res/layout/gainlose_rv_item.xml" value="0.6067924746672604" />
