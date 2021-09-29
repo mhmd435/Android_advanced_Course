@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -20,16 +21,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.androidadvancedcourse.MainActivity;
+import com.example.androidadvancedcourse.Models.cryptolistmodel.AllMarketModel;
+import com.example.androidadvancedcourse.Models.cryptolistmodel.DataItem;
 import com.example.androidadvancedcourse.R;
+import com.example.androidadvancedcourse.RoomDb.Entites.MarketListEntity;
 import com.example.androidadvancedcourse.databinding.FragmentMarketBinding;
+import com.example.androidadvancedcourse.viewmodels.AppViewmodel;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class MarketFragment extends Fragment {
+
 
     FragmentMarketBinding fragmentMarketBinding;
     MainActivity mainActivity;
     CollapsingToolbarLayout collapsingToolbarLayout;
-
+    
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

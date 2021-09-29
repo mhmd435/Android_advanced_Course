@@ -62,7 +62,6 @@
             android:background="@drawable/nestedscroll_bg"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".MarketFragment.MarketFragment">
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
