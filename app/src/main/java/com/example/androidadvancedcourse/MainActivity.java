@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void CallListApiRequest() {
-        Observable.interval(5, TimeUnit.SECONDS)
+        Observable.interval(20, TimeUnit.SECONDS)
                 .flatMap(n -> appViewModel.MarketFutureCall().get())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

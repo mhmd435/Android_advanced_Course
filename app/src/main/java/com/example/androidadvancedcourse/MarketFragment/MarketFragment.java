@@ -15,7 +15,10 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +34,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -50,6 +54,9 @@ public class MarketFragment extends Fragment {
     List<DataItem> dataItemList;
     marketRV_Adapter marketRvAdapter;
     CompositeDisposable compositeDisposable;
+
+    ArrayList<DataItem> filteredList;
+    ArrayList<DataItem> UpdatedDataList;
 
 
     @Override
@@ -73,11 +80,72 @@ public class MarketFragment extends Fragment {
         fragmentMarketBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_market,container,false);
         compositeDisposable = new CompositeDisposable();
 
+        UpdatedDataList = new ArrayList<>();
+        filteredList = new ArrayList<>();
+
+        setupSearchBox();
         setupViewModel();
         getMarketListDataFromDb();
 
 
         return fragmentMarketBinding.getRoot();
+    }
+
+    private void setupSearchBox(){
+        fragmentMarketBinding.searchEdittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+        });
+    }
+
+    private void filter(String name){
+        filteredList.clear();
+        for (DataItem item : dataItemList){
+            if (item.getSymbol().toLowerCase().contains(name.toLowerCase()) || item.getName().toLowerCase().contains(name.toLowerCase())){
+                filteredList.add(item);
+            }
+        }
+
+        marketRvAdapter.updateData(filteredList);
+        marketRvAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                checkEmpty();
+            }
+
+            void checkEmpty(){
+                if (marketRvAdapter.getItemCount() == 0){
+                    fragmentMarketBinding.itemnotFoundTxt.setVisibility(View.VISIBLE);
+                }else {
+                    fragmentMarketBinding.itemnotFoundTxt.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void getMarketListDataFromDb() {
@@ -95,7 +163,13 @@ public class MarketFragment extends Fragment {
                             fragmentMarketBinding.marketRv.setAdapter(marketRvAdapter);
                         }else {
                             marketRvAdapter = (marketRV_Adapter) fragmentMarketBinding.marketRv.getAdapter();
-                            marketRvAdapter.updateData((ArrayList<DataItem>) dataItemList);
+
+                            if (filteredList.isEmpty() || filteredList.size() == 1000){
+                                marketRvAdapter.updateData((ArrayList<DataItem>) dataItemList);
+                            }else {
+                                //get All new Data when user searching and filtering
+                                marketRvAdapter.updateData((ArrayList<DataItem>) filteredList);
+                            }
                         }
 
 
