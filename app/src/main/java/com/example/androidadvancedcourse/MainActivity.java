@@ -24,8 +24,15 @@ import com.example.androidadvancedcourse.viewmodels.AppViewmodel;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -33,6 +40,8 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -96,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAvailable(@androidx.annotation.NonNull Network network) {
                 Log.e("TAG", "onAvailable: ");
                 CallListApiRequest();
+                CallCryptoMarketApiRequest();
             }
 
             @Override
@@ -110,6 +120,82 @@ public class MainActivity extends AppCompatActivity {
         }else{
             connectivityManager.registerNetworkCallback(networkRequest,networkCallback);
         }
+    }
+
+    private void CallCryptoMarketApiRequest() {
+        Completable.fromRunnable(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Document pageSrc = Jsoup.connect("https://coinmarketcap.com/").get();
+
+                    // Scraping Market Data like (marketCap,Dominance,...)
+                    Elements ScrapeMarketData= pageSrc.getElementsByClass("cmc-link");
+                    //for spliting BTC and ETH dominance in txt
+                    String[] dominance_txt = ScrapeMarketData.get(4).text().split(" ");
+
+                    // Scraping Market number of changes like (MarketcapChange,volumeChange,...)
+                    Elements ScrapeMarketChange = pageSrc.getElementsByClass("sc-27sy12-0 gLZJFn");
+                    String[] changePercent = ScrapeMarketChange.text().split(" ");
+
+                    // Scraping All span Tag
+                    Elements ScrapeChangeIcon = pageSrc.getElementsByTag("span");
+
+                    // get all span Tag wth Icon (class= caretUp and caretDown)
+                    ArrayList<String> IconList = new ArrayList();
+                    for (Element i : ScrapeChangeIcon){
+                        if (i.hasClass("icon-Caret-down") || i.hasClass("icon-Caret-up")){
+                            IconList.add(i.attr("class"));
+                        }
+                    }
+
+                    // matching - or + element of PercentChanges
+                    ArrayList<String> finalchangePercent = new ArrayList<>();
+                    for (int i = 0;i < 3;i++){
+                        if (IconList.get(i).equals("icon-Caret-up")){
+                            finalchangePercent.add(changePercent[i]);
+                        }else{
+                            finalchangePercent.add("-" + changePercent[i]);
+                        }
+                    }
+
+                    // initialize all data
+                    String Cryptos = ScrapeMarketData.get(0).text();
+                    String Exchanges = ScrapeMarketData.get(1).text();
+                    String MarketCap = ScrapeMarketData.get(2).text();
+                    String Vol_24h = ScrapeMarketData.get(3).text();
+
+                    String BTC_Dominance = dominance_txt[1];
+                    String ETH_Dominance = dominance_txt[3];
+
+                    String MarketCap_change = finalchangePercent.get(0);
+                    String vol_change = finalchangePercent.get(1);
+                    String BTCD_change = finalchangePercent.get(2);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("TAG", "onComplete: jsoup done");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e("TAG", "onError:"+ e.getMessage());
+                    }
+                });
     }
 
     private void setupViewModel() {

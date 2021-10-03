@@ -87,5 +87,8 @@ dependencies {
     //dot loading
     implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
 
+    //jsoup
+    implementation 'org.jsoup:jsoup:1.14.1'
+
 
 }
