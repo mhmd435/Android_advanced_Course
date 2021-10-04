@@ -8,7 +8,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.androidadvancedcourse.AppRepository;
 import com.example.androidadvancedcourse.Models.cryptolistmodel.AllMarketModel;
+import com.example.androidadvancedcourse.Models.cryptolistmodel.CryptoMarketDataModel;
 import com.example.androidadvancedcourse.R;
+import com.example.androidadvancedcourse.RoomDb.Entites.MarketDataEntity;
 import com.example.androidadvancedcourse.RoomDb.Entites.MarketListEntity;
 
 import java.util.ArrayList;
@@ -62,6 +64,15 @@ public class AppViewmodel extends AndroidViewModel {
 
     public Flowable<MarketListEntity> getAllMarketData(){
         return appRepository.getAllMarketData();
+    }
+
+
+    public void insertCryptoDataMarket(CryptoMarketDataModel cryptoMarketDataModel) {
+        appRepository.InsertCryptoDataMarket(cryptoMarketDataModel);
+    }
+
+    public Flowable<MarketDataEntity> getCryptoMarketData(){
+        return appRepository.getCryptoMarketData();
     }
 
 

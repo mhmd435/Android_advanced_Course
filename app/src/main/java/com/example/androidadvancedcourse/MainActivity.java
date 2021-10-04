@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.widget.PopupMenu;
 
 import com.example.androidadvancedcourse.Models.cryptolistmodel.AllMarketModel;
+import com.example.androidadvancedcourse.Models.cryptolistmodel.CryptoMarketDataModel;
 import com.example.androidadvancedcourse.databinding.ActivityMainBinding;
 import com.example.androidadvancedcourse.viewmodels.AppViewmodel;
 import com.google.android.material.navigation.NavigationBarView;
@@ -171,6 +172,10 @@ public class MainActivity extends AppCompatActivity {
                     String MarketCap_change = finalchangePercent.get(0);
                     String vol_change = finalchangePercent.get(1);
                     String BTCD_change = finalchangePercent.get(2);
+
+                    CryptoMarketDataModel cryptoMarketDataModel = new CryptoMarketDataModel(Cryptos,Exchanges,MarketCap,Vol_24h,BTC_Dominance,ETH_Dominance,MarketCap_change,vol_change,BTCD_change);
+                    // insert model class to RoomDatabase
+                    appViewModel.insertCryptoDataMarket(cryptoMarketDataModel);
 
                 } catch (IOException e) {
                     e.printStackTrace();

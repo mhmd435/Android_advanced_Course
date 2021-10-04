@@ -4,6 +4,8 @@ package com.example.androidadvancedcourse;
 import android.util.Log;
 
 import com.example.androidadvancedcourse.Models.cryptolistmodel.AllMarketModel;
+import com.example.androidadvancedcourse.Models.cryptolistmodel.CryptoMarketDataModel;
+import com.example.androidadvancedcourse.RoomDb.Entites.MarketDataEntity;
 import com.example.androidadvancedcourse.RoomDb.Entites.MarketListEntity;
 import com.example.androidadvancedcourse.RoomDb.RoomDao;
 import com.example.androidadvancedcourse.retrofit.RequestApi;
@@ -105,5 +107,31 @@ public class AppRepository {
 
     public Flowable<MarketListEntity> getAllMarketData(){
         return roomDao.getAllMarketData();
+    }
+
+    public Flowable<MarketDataEntity> getCryptoMarketData(){
+        return roomDao.getCryptoMarketData();
+    }
+
+    public void InsertCryptoDataMarket(CryptoMarketDataModel cryptoMarketDataModel) {
+        Completable.fromAction(() -> roomDao.insert(new MarketDataEntity(cryptoMarketDataModel))).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new CompletableObserver() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        Log.e("insertAllMarket", "onSubscribe: ok");
+//                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("insertAllMarket", "onComplete: ok");
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e("insertAllMarket", "onError: " + e.getMessage());
+                    }
+                });
     }
 }

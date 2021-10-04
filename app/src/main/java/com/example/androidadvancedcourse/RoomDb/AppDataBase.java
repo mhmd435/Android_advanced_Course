@@ -7,11 +7,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import com.example.androidadvancedcourse.RoomDb.Entites.MarketDataEntity;
 import com.example.androidadvancedcourse.RoomDb.Entites.MarketListEntity;
 import com.example.androidadvancedcourse.RoomDb.converters.AllMarketModelConverter;
+import com.example.androidadvancedcourse.RoomDb.converters.CryptoDataModelConverter;
 
-@TypeConverters({AllMarketModelConverter.class})
-@Database(entities = {MarketListEntity.class},version = 1)
+@TypeConverters({AllMarketModelConverter.class, CryptoDataModelConverter.class})
+@Database(entities = {MarketListEntity.class, MarketDataEntity.class},version = 2)
 public abstract class AppDataBase extends RoomDatabase {
 
     private static final String Db_Name = "AppDb";
