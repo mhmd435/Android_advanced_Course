@@ -51,9 +51,11 @@ public class marketRV_Adapter extends RecyclerView.Adapter<marketRV_Adapter.Mark
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("model", dataItems.get(position));
+                bundle.putParcelable("model",dataItems.get(position));
 
-//                Navigation.findNavController(v).navigate(R.id.action_marketFragment_to_cryptoDetailFragment,bundle);
+                Navigation.findNavController(v).navigate(R.id.action_marketFragment_to_detailFragment,bundle);
+
+
             }
         });
     }

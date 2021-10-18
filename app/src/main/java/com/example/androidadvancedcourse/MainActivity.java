@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.PopupMenu;
 
 import com.example.androidadvancedcourse.Models.cryptolistmodel.AllMarketModel;
@@ -23,6 +24,7 @@ import com.example.androidadvancedcourse.Models.cryptolistmodel.CryptoMarketData
 import com.example.androidadvancedcourse.databinding.ActivityMainBinding;
 import com.example.androidadvancedcourse.viewmodels.AppViewmodel;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jsoup.Jsoup;
@@ -209,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void CallListApiRequest() {
         Observable.interval(20, TimeUnit.SECONDS)
-                .flatMap(n -> appViewModel.MarketFutureCall().get())
+                .flatMap(n -> appViewModel.MarketFutureCall())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<AllMarketModel>() {
@@ -256,6 +258,19 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         NavigationUI.setupWithNavController(activityMainBinding.navigationView,navController);
+
+        activityMainBinding.navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@androidx.annotation.NonNull MenuItem item) {
+                if (item.getItemId() == R.id.exit){
+                    finish();
+                }else {
+                    NavigationUI.onNavDestinationSelected(item, navController);
+                    activityMainBinding.drawerlayout.closeDrawers();
+                }
+                return false;
+            }
+        });
 
 
         setupSmoothBottomMenu();

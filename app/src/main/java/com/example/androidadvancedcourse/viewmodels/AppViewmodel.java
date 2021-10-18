@@ -37,7 +37,7 @@ public class AppViewmodel extends AndroidViewModel {
 
     }
 
-    public Future<Observable<AllMarketModel>> MarketFutureCall(){
+    public Observable<AllMarketModel> MarketFutureCall(){
         return appRepository.marketListFutureCall();
     }
 

@@ -37,49 +37,53 @@ public class AppRepository {
         this.roomDao = roomDao;
     }
 
-    public Future<Observable<AllMarketModel>> marketListFutureCall(){
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-
-        final Callable<Observable<AllMarketModel>> myNetworkCallable = new Callable<Observable<AllMarketModel>>() {
-            @Override
-            public Observable<AllMarketModel> call() throws Exception {
-                return requestApi.makeMarketLatestListCall();
-            }
-        };
-
-        final Future<Observable<AllMarketModel>> futureObservable = new Future<Observable<AllMarketModel>>() {
-            @Override
-            public boolean cancel(boolean b) {
-                if (b){
-                    executor.shutdown();
-                }
-                return false;
-            }
-
-            @Override
-            public boolean isCancelled() {
-                return executor.isShutdown();
-            }
-
-            @Override
-            public boolean isDone() {
-                return executor.isTerminated();
-            }
-
-            @Override
-            public Observable<AllMarketModel> get() throws ExecutionException, InterruptedException {
-                return executor.submit(myNetworkCallable).get();
-            }
-
-            @Override
-            public Observable<AllMarketModel> get(long timeout, TimeUnit timeUnit) throws ExecutionException, InterruptedException, TimeoutException {
-                return executor.submit(myNetworkCallable).get(timeout,timeUnit);
-            }
-        };
-
-        return futureObservable;
-
+    public Observable<AllMarketModel> marketListFutureCall(){
+        return requestApi.makeMarketLatestListCall();
     }
+
+//    public Future<Observable<AllMarketModel>> marketListFutureCall(){
+//        final ExecutorService executor = Executors.newSingleThreadExecutor();
+//
+//        final Callable<Observable<AllMarketModel>> myNetworkCallable = new Callable<Observable<AllMarketModel>>() {
+//            @Override
+//            public Observable<AllMarketModel> call() throws Exception {
+//                return requestApi.makeMarketLatestListCall();
+//            }
+//        };
+//
+//        final Future<Observable<AllMarketModel>> futureObservable = new Future<Observable<AllMarketModel>>() {
+//            @Override
+//            public boolean cancel(boolean b) {
+//                if (b){
+//                    executor.shutdown();
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean isCancelled() {
+//                return executor.isShutdown();
+//            }
+//
+//            @Override
+//            public boolean isDone() {
+//                return executor.isTerminated();
+//            }
+//
+//            @Override
+//            public Observable<AllMarketModel> get() throws ExecutionException, InterruptedException {
+//                return executor.submit(myNetworkCallable).get();
+//            }
+//
+//            @Override
+//            public Observable<AllMarketModel> get(long timeout, TimeUnit timeUnit) throws ExecutionException, InterruptedException, TimeoutException {
+//                return executor.submit(myNetworkCallable).get(timeout,timeUnit);
+//            }
+//        };
+//
+//        return futureObservable;
+//
+//    }
 
 
     public void InsertAllMarket(AllMarketModel allMarketModel){
